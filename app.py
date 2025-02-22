@@ -52,5 +52,18 @@ def agregar_estudiante():
     db.session.commit()
     return jsonify({'mensaje': 'Estudiante agregado exitosamente'}), 201
 
+@app.route('/estudiantes/<no_control>', methods=['GET'])
+def obtener_estudiante(no_control):
+    estudiante = Estudiante.query.get(no_control)
+    if estudiante is None:
+        return jsonify({'mensaje': 'Estudiante no encontrado'}), 404
+    return jsonify({
+        'no_control': estudiante.no_control,
+        'nombre': estudiante.nombre,
+        'ap_paterno': estudiante.ap_paterno,
+        'ap_materno': estudiante.ap_materno,
+        'semestre': estudiante.semestre
+    })
+
 if __name__ == '__main__':
     app.run(debug=True)

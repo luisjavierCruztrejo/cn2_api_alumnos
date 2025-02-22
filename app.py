@@ -64,6 +64,19 @@ def obtener_estudiante(no_control):
         'ap_materno': estudiante.ap_materno,
         'semestre': estudiante.semestre
     })
+# Endpoint para actualizar un estudiante
+@app.route('/estudiantes/<no_control>', methods=['PUT'])
+def actualizar_estudiante(no_control):
+    estudiante = Estudiante.query.get(no_control)
+    if estudiante is None:
+        return jsonify({'mensaje': 'Estudiante no encontrado'}), 404
+    data = request.get_json()
+    estudiante.nombre = data['nombre']
+    estudiante.ap_paterno = data['ap_paterno']
+    estudiante.ap_materno = data['ap_materno']
+    estudiante.semestre = data['semestre']
+    db.session.commit()
+    return jsonify({'mensaje': 'Estudiante actualizado exitosamente'})
 
 if __name__ == '__main__':
     app.run(debug=True)
